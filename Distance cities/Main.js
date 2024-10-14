@@ -1,65 +1,64 @@
-﻿//javascript.js
-//set map options
+﻿// Set map options
 var myLatLng = { lat: 38.3460, lng: -0.4907 };
 var mapOptions = {
     center: myLatLng,
     zoom: 7,
     mapTypeId: google.maps.MapTypeId.ROADMAP
-
 };
 
-//create map
+// Create map
 var map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
 
-//create a DirectionsService object to use the route method and get a result for our request
+// Create a DirectionsService object
 var directionsService = new google.maps.DirectionsService();
 
-//create a DirectionsRenderer object which we will use to display the route
+// Create a DirectionsRenderer object
 var directionsDisplay = new google.maps.DirectionsRenderer();
 
-//Geocoder which allows getting specific addresses and coordinates
+// Geocoder to get specific addresses and coordinates
 var geocoder = new google.maps.Geocoder();
 
-//bind the DirectionsRenderer to the map
+// Bind DirectionsRenderer to the map
 directionsDisplay.setMap(map);
 
-
-//define calcRoute function
+// Define calcRoute function
 function calcRoute() {
-    //geocode origin and destination
+    // Get values from input fields
+    var origin = document.getElementById("from").value;
+    var destination = document.getElementById("to").value;
+
+    // Geocode origin and destination
     geocodeAddress(geocoder, origin, "origin");
     geocodeAddress(geocoder, destination, "destination");
-    //create requesst
-    var request = {
-        origin: document.getElementById("from").value,
-        destination: document.getElementById("to").value,
-        travelMode: google.maps.TravelMode.DRIVING, //WALKING, BYCYCLING, TRANSIT
-        unitSystem: google.maps.UnitSystem.IMPERIAL
-    }
 
-    //pass the request to the route method
+    // Create request for route
+    var request = {
+        origin: origin,
+        destination: destination,
+        travelMode: google.maps.TravelMode.DRIVING, // WALKING, BICYCLING, TRANSIT
+        unitSystem: google.maps.UnitSystem.IMPERIAL
+    };
+
+    // Pass the request to the route method
     directionsService.route(request, function (result, status) {
         if (status == google.maps.DirectionsStatus.OK) {
-
-            //Get distance and time
+            // Display distance and time
             const output = document.querySelector('#output');
-            output.innerHTML = "<div class='alert-info'>From: " + document.getElementById("from").value + ".<br />To: " + document.getElementById("to").value + ".<br /> Driving distance <i class='fas fa-road'></i> : " + result.routes[0].legs[0].distance.text + ".<br />Duration <i class='fas fa-hourglass-start'></i> : " + result.routes[0].legs[0].duration.text + ".</div>";
+            output.innerHTML = "<div class='alert-info'>From: " + origin + ".<br />To: " + destination + ".<br /> Driving distance <i class='fas fa-road'></i> : " + result.routes[0].legs[0].distance.text + ".<br />Duration <i class='fas fa-hourglass-start'></i> : " + result.routes[0].legs[0].duration.text + ".</div>";
 
-            //display route
+            // Display route on map
             directionsDisplay.setDirections(result);
         } else {
-            //delete route from map
+            // Display error if route not found
             directionsDisplay.setDirections({ routes: [] });
-            //center map in London
             map.setCenter(myLatLng);
-
-            //show error message
+            const output = document.querySelector('#output');
             output.innerHTML = "<div class='alert-danger'><i class='fas fa-exclamation-triangle'></i> Could not retrieve driving distance.</div>";
         }
     });
-
 }
 
+// Geocode function to get specific addresses and coordinates
 function geocodeAddress(geocoder, address, type) {
     geocoder.geocode({ 'address': address }, function (results, status) {
         if (status === 'OK') {
@@ -76,15 +75,13 @@ function geocodeAddress(geocoder, address, type) {
     });
 }
 
+// Initialize autocomplete
+function initAutocomplete() {
+    var originInput = document.getElementById("from");
+    var destinationInput = document.getElementById("to");
 
-
-//create autocomplete objects for all inputs
-var options = {
-    types: ['(cities)']
+    var originAutocomplete = new google.maps.places.Autocomplete(originInput);
+    var destinationAutocomplete = new google.maps.places.Autocomplete(destinationInput);
 }
 
-var input1 = document.getElementById("from");
-var autocomplete1 = new google.maps.places.Autocomplete(input1, options);
-
-var input2 = document.getElementById("to");
-var autocomplete2 = new google.maps.places.Autocomplete(input2, options);
+google.maps.event.addDomListener(window, "load", initAutocomplete);
