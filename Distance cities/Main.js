@@ -21,13 +21,13 @@ var directionsDisplay = new google.maps.DirectionsRenderer();
 directionsDisplay.setMap(map);
 
 
-//define calcRoute function
-function calcRoute() {
+//define calcRoute Driving function
+function calcRouteD() {
     //create request
     var request = {
         origin: document.getElementById("from").value,
         destination: document.getElementById("to").value,
-        travelMode: google.maps.TravelMode.DRIVING, //WALKING, BYCYCLING, TRANSIT
+        travelMode: google.maps.TravelMode.DRIVING, //,WALKING, BYCYCLING, TRANSIT
         unitSystem: google.maps.UnitSystem.IMPERIAL
     }
 
@@ -53,6 +53,104 @@ function calcRoute() {
     });
 
 }
+
+//define calcRoute walking function
+function calcRouteW() {
+    //create request
+    var request = {
+        origin: document.getElementById("from").value,
+        destination: document.getElementById("to").value,
+        travelMode: google.maps.TravelMode.WALKING, //,WALKING, BYCYCLING, TRANSIT
+        unitSystem: google.maps.UnitSystem.IMPERIAL
+    }
+
+    //pass the request to the route method
+    directionsService.route(request, function (result, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+
+            //Get distance and time
+            const output = document.querySelector('#output');
+            output.innerHTML = "<div class='alert-info'>From: " + document.getElementById("from").value + ".<br />To: " + document.getElementById("to").value + ".<br /> Driving distance <i class='fas fa-road'></i> : " + result.routes[0].legs[0].distance.text + ".<br />Duration <i class='fas fa-hourglass-start'></i> : " + result.routes[0].legs[0].duration.text + ".</div>";
+
+            //display route
+            directionsDisplay.setDirections(result);
+        } else {
+            //delete route from map
+            directionsDisplay.setDirections({ routes: [] });
+            //center map in London
+            map.setCenter(myLatLng);
+
+            //show error message
+            output.innerHTML = "<div class='alert-danger'><i class='fas fa-exclamation-triangle'></i> Could not retrieve driving distance.</div>";
+        }
+    });
+
+}
+//define calcRoute Bicycling function
+function calcRouteB() {
+    //create request
+    var request = {
+        origin: document.getElementById("from").value,
+        destination: document.getElementById("to").value,
+        travelMode: google.maps.TravelMode.BICYCLING, //,WALKING, BYCYCLING, TRANSIT
+        unitSystem: google.maps.UnitSystem.IMPERIAL
+    }
+
+    //pass the request to the route method
+    directionsService.route(request, function (result, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+
+            //Get distance and time
+            const output = document.querySelector('#output');
+            output.innerHTML = "<div class='alert-info'>From: " + document.getElementById("from").value + ".<br />To: " + document.getElementById("to").value + ".<br /> Driving distance <i class='fas fa-road'></i> : " + result.routes[0].legs[0].distance.text + ".<br />Duration <i class='fas fa-hourglass-start'></i> : " + result.routes[0].legs[0].duration.text + ".</div>";
+
+            //display route
+            directionsDisplay.setDirections(result);
+        } else {
+            //delete route from map
+            directionsDisplay.setDirections({ routes: [] });
+            //center map in London
+            map.setCenter(myLatLng);
+
+            //show error message
+            output.innerHTML = "<div class='alert-danger'><i class='fas fa-exclamation-triangle'></i> Could not retrieve driving distance.</div>";
+        }
+    });
+
+}
+//define calcRoute Driving function
+function calcRouteT() {
+    //create request
+    var request = {
+        origin: document.getElementById("from").value,
+        destination: document.getElementById("to").value,
+        travelMode: google.maps.TravelMode.TRANSIT, //,WALKING, BYCYCLING, TRANSIT
+        unitSystem: google.maps.UnitSystem.IMPERIAL
+    }
+
+    //pass the request to the route method
+    directionsService.route(request, function (result, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+
+            //Get distance and time
+            const output = document.querySelector('#output');
+            output.innerHTML = "<div class='alert-info'>From: " + document.getElementById("from").value + ".<br />To: " + document.getElementById("to").value + ".<br /> Driving distance <i class='fas fa-road'></i> : " + result.routes[0].legs[0].distance.text + ".<br />Duration <i class='fas fa-hourglass-start'></i> : " + result.routes[0].legs[0].duration.text + ".</div>";
+
+            //display route
+            directionsDisplay.setDirections(result);
+        } else {
+            //delete route from map
+            directionsDisplay.setDirections({ routes: [] });
+            //center map in London
+            map.setCenter(myLatLng);
+
+            //show error message
+            output.innerHTML = "<div class='alert-danger'><i class='fas fa-exclamation-triangle'></i> Could not retrieve driving distance.</div>";
+        }
+    });
+
+}
+//DRIVING,WALKING, BYCYCLING, TRANSIT
 
 
 

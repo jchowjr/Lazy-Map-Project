@@ -34,8 +34,11 @@
                  
             </form>
 
-            <div class="col-xs-offset-2 col-xs-10">
-                <button class="btn btn-info btn-lg " onclick="calcRoute();"><i class="fas fa-map-signs"></i></button>
+            <div class="col-xs-offset-2 col-xs-10"><!--DRIVING,WALKING, BYCYCLING, TRANSIT-->
+                <button class="btn btn-info btn-lg " onclick="calcRouteD();"><i class="fas fa-map-signs"></i></button>
+                <button class="btn btn-info btn-lg " onclick="calcRouteW();"><i class="fas fa-map-signs"></i></button>
+                <button class="btn btn-info btn-lg " onclick="calcRouteB();"><i class="fas fa-map-signs"></i></button>
+                <button class="btn btn-info btn-lg " onclick="calcRouteT();"><i class="fas fa-map-signs"></i></button>
             </div>
         </div>
         <div class="container-fluid">
@@ -50,7 +53,7 @@
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRXQIpGWZOg-zzk3UGfqkkJMlPVm3SIWg&libraries=places]&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRXQIpGWZOg-zzk3UGfqkkJMlPVm3SIWg&libraries=places&libraries=places"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="Scripts/jquery-3.1.1.min.js"></script>
