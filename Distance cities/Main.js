@@ -17,13 +17,19 @@ var directionsService = new google.maps.DirectionsService();
 //create a DirectionsRenderer object which we will use to display the route
 var directionsDisplay = new google.maps.DirectionsRenderer();
 
+//Geocoder which allows getting specific addresses and coordinates
+var geocoder = new google.maps.Geocoder();
+
 //bind the DirectionsRenderer to the map
 directionsDisplay.setMap(map);
 
 
 //define calcRoute function
 function calcRoute() {
-    //create request
+    //geocode origin and destination
+    geocodeAddress(geocoder, origin, "origin");
+    geocodeAddress(geocoder, destination, "destination");
+    //create requesst
     var request = {
         origin: document.getElementById("from").value,
         destination: document.getElementById("to").value,
@@ -52,6 +58,22 @@ function calcRoute() {
         }
     });
 
+}
+
+function geocodeAddress(geocoder, address, type) {
+    geocoder.geocode({ 'address': address }, function (results, status) {
+        if (status === 'OK') {
+            if (type === "origin") {
+                console.log("Origin Address: ", results[0].formatted_address); // Full address of origin
+                console.log("Origin Coordinates: ", results[0].geometry.location.toString()); // Coordinates
+            } else if (type === "destination") {
+                console.log("Destination Address: ", results[0].formatted_address); // Full address of destination
+                console.log("Destination Coordinates: ", results[0].geometry.location.toString()); // Coordinates
+            }
+        } else {
+            console.error('Geocode was not successful for the following reason: ' + status);
+        }
+    });
 }
 
 
