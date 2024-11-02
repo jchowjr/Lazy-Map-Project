@@ -20,6 +20,7 @@ var directionsDisplay = new google.maps.DirectionsRenderer();
 //bind the DirectionsRenderer to the map
 directionsDisplay.setMap(map);
 
+setCurrentLocation();
 
 //define calcRoute Driving function
 function calcRouteD() {
@@ -164,3 +165,40 @@ var autocomplete1 = new google.maps.places.Autocomplete(input1, options);
 
 var input2 = document.getElementById("to");
 var autocomplete2 = new google.maps.places.Autocomplete(input2, options);
+
+﻿// Initialize map options and current location variable
+var myLatLng = { lat: 38.3460, lng: -0.4907 }; // Default center (can be changed)
+
+let userLatLng = null; // Placeholder for user's current location
+// Get the user's current location and set it on the map
+function setCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            userLatLng = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            // Update the map center to user's current location
+            map.setCenter(userLatLng);
+            map.setZoom(12);
+            // Place marker at user's location
+            var marker = new google.maps.Marker({
+                map: map,
+                position: userLatLng
+            });
+        }, function () {
+            alert("Geolocation failed. Please allow location access.");
+        });
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+// Set user's location as the origin when the button is clicked
+function useCurrentLocationAsOrigin() {
+    if (userLatLng) {
+        document.getElementById("from").value = `${userLatLng.lat}, ${userLatLng.lng}`;
+    } else {
+        alert("Location not yet available. Please try again after enabling geolocation.");
+    }
+}
+
